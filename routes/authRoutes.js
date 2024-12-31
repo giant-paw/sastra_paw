@@ -126,7 +126,7 @@ router.post("/login", (req, res) => {
         if (user.role === "admin") {
           res.redirect("/");
         } else {
-          res.redirect("/dataBuku");
+          res.redirect("/userDataBuku");
         }
       });
     }
@@ -143,5 +143,6 @@ router.post("/logout", (req, res) => {
     res.redirect("/login"); // Arahkan ke halaman login setelah logout
   });
 });
+
 
 module.exports = router;

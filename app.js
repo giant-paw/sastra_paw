@@ -42,7 +42,7 @@ app.use(session({
 app.use('/', authRoutes);
 
 app.get('/', isAuthenticated,(req, res) => {
-    res.render('index', 
+    res.render('adminHomepage', 
         {layout : 'layouts/main-layout.ejs'}
     );
 });
@@ -67,7 +67,7 @@ app.get('/loan-view',isAuthenticated, (req, res) => {
     });
 });
 
-app.get('/dataBuku',isAuthenticated, (req, res) => {
+app.get('/userDataBuku',isAuthenticated, (req, res) => {
     db.query('SELECT * FROM buku', (err, books) => {
         if (err) return res.status(500).send('Internal Server Error');
         res.render('userDataBuku', {
@@ -75,6 +75,12 @@ app.get('/dataBuku',isAuthenticated, (req, res) => {
             books: books
         });
     });
+});
+
+app.get('/userHomepage', isAuthenticated,(req, res) => {
+    res.render('userHomepage', 
+        {layout : 'layouts/main-layout.ejs'}
+    );
 });
 
 app.listen(port,()=> {

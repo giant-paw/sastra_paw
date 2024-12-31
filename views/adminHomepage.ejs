@@ -1,3 +1,5 @@
+<!-- HALAMAN UNTUK MENAMBAH DATA BUKU (UNTUK ADMIN) -->
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     
     <a class="navbar-brand" href="#">Gubuk Sastra</a>
@@ -5,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/book-view">Daftar Buku</a>
@@ -14,6 +16,10 @@
                 <a class="nav-link" href="/loan-view">Pinjam</a>
             </li>
         </ul>
+
+        <form class="d-flex" action="/logout" method="POST">
+            <button class="btn btn-outline-danger" type="submit">Logout</button>
+          </form>
     </div>
 </nav>
 <div class="container mt-5">
