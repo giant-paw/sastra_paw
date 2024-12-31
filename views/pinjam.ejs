@@ -124,7 +124,7 @@
                 <a class="nav-link" href="/book-view">Daftar Buku</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/pinjam">Pinjam</a>
+                <a class="nav-link" href="/loan-view">Pinjam</a>
             </li>
         </ul>
     </div>
@@ -133,7 +133,7 @@
   <div class="container mt-5">
     <h1 class="text-center">Daftar Peminjaman</h1>
 
-    <!-- Form untuk Menambahkan Buku Baru -->
+    <!-- Form untuk Menambahkan peminjaman Baru -->
     <form id="addLoanForm" class="my-4">
       <div class="input-group">
 
@@ -310,16 +310,16 @@
   $(document).ready(function () {
     let editNoPinjaman;
 
-    // Tambah buku baru
+    // Tambah peminjaman baru
     $("#addLoanForm").on("submit", function (e) {
       e.preventDefault();
       const id_anggota = $("#newIdAnggota").val().trim();
       const id_buku = $("#newIdBuku").val().trim();
-      const judulBuku = $("#newJudulBuku").val().trim();
+      const judul_Buku = $("#newJudulBuku").val().trim();
       const tgl_pinjam = $("#newTglPinjam").val().trim();
       const tgl_kembali = $("#newTglKembali").val().trim();
 
-      if (id_anggota && id_buku && judulBuku && tgl_pinjam && tgl_kembali) {
+      if (id_anggota && id_buku && judul_Buku && tgl_pinjam && tgl_kembali) {
         $.ajax({
           url: "/loans",
           type: "POST",
@@ -327,7 +327,7 @@
           data: JSON.stringify({
             id_anggota: id_anggota,
             id_buku: id_buku,
-            judul_buku: judulBuku,
+            judul_buku: judul_Buku,
             tgl_pinjam: tgl_pinjam,
             tgl_kembali: tgl_kembali,
           }),
@@ -364,18 +364,18 @@
       e.preventDefault();
       const id_anggota = $("#editIdAnggota").val().trim();
       const id_buku = $("#editIdBuku").val().trim();
-      const judulBuku = $("#editJudulBuku").val().trim();
+      const judul_Buku = $("#editJudulBuku").val().trim();
       const tgl_pinjam = $("#editTglPinjam").val().trim();
       const tgl_kembali = $("#editTglKembali").val().trim();
 
-      if (id_anggota && id_buku && judulBuku && tgl_pinjam && tgl_kembali) {
+      if (id_anggota && id_buku && judul_Buku && tgl_pinjam && tgl_kembali) {
         $.ajax({
           url: "/loans/" + editNoPinjaman,
           type: "PUT",
           data: JSON.stringify({
             id_anggota: id_anggota,
             id_buku: id_buku,
-            judul_buku: judulBuku,
+            judul_buku: judul_Buku,
             tgl_pinjam: tgl_pinjam,
             tgl_kembali: tgl_kembali,
           }),
