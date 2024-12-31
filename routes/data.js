@@ -3,10 +3,10 @@ const router = express.Router();
 
 let books = [
     {
-       kode_buku: 1, judul_buku: "Bulan", pengarang: "Tere Liye", penerbit: "Gramedia"
+       id: 1, judul_buku: "Bulan", pengarang: "Tere Liye", penerbit: "Gramedia"
     },
     {
-        kode_buku: 2, judul_buku: "Grit", pengarang: "Angela Duckworth", penerbit: "Sinar Pustaka"
+        id: 2, judul_buku: "Grit", pengarang: "Angela Duckworth", penerbit: "Sinar Pustaka"
      }
 ];
 
@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const newBook = {
-        kode_buku: books.length + 1,
+        id: books.length + 1,
         judul_buku: req.body.judul_buku,
         pengarang: req.body.pengarang,
         penerbit: req.body.penerbit
