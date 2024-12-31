@@ -9,6 +9,7 @@ router.get("/", (req, res) => {
 // POST: Menambahkan buku baru
 router.post("/", (req, res) => {
   const newBook = {
+    kode_buku: books.length > 0 ? books[books.length - 1].kode_buku + 1 : 1,
     judul_buku: req.body.judul_buku,
     pengarang: req.body.pengarang,
     penerbit: req.body.penerbit,
@@ -21,9 +22,9 @@ router.post("/", (req, res) => {
 });
 
 // DELETE: Menghapus buku
-router.delete("/:id", (req, res) => {
+router.delete("/:kode_buku", (req, res) => {
   const bookIndex = books.findIndex(
-    (b) => b.id === parseInt(req.params.id)
+    (b) => b.kode_buku === parseInt(req.params.kode_buku)
   );
   if (bookIndex === -1)
     return res.status(404).json({ message: "Buku tidak ditemukan" });
@@ -34,9 +35,9 @@ router.delete("/:id", (req, res) => {
 });
 
 // PUT: Memperbarui buku
-router.put("/:id", (req, res) => {
+router.put("/:kode_buku", (req, res) => {
   const book = books.find(
-    (b) => b.id === parseInt(req.params.id)
+    (b) => b.kode_buku === parseInt(req.params.kode_buku)
   );
   if (!book) return res.status(404).json({ message: "Buku tidak ditemukan" });
 
@@ -45,7 +46,7 @@ router.put("/:id", (req, res) => {
   book.penerbit = req.body.penerbit || book.penerbit;
 
   res.status(200).json({
-    message: `Buku dengan kode ${book.id} telah diperbarui`,
+    message: `Buku dengan kode ${book.kode_buku} telah diperbarui`,
     updatedBook: book,
   });
 });
