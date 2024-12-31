@@ -12,6 +12,12 @@ const session = require('express-session')
 const authRoutes = require('./routes/authRoutes.js');
 const { isAuthenticated } = require('./middlewares/middleware.js');
 
+
+const path = require('path');
+
+// Set folder public sebagai folder static
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(expressLayouts);
 
 app.use(express.json());
@@ -37,8 +43,8 @@ app.get('/', isAuthenticated,(req, res) => {
     );
 });
 
-app.get('/contact', isAuthenticated, (req, res)=>{
-    res.render('contact', {
+app.get('/pinjam', isAuthenticated, (req, res)=>{
+    res.render('pinjam', {
         layout : 'layouts/main-layout.ejs'
     });
 })

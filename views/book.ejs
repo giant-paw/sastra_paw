@@ -1,6 +1,138 @@
-<div class="container mt-5">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar Buku</title>
+
+</head>
+<body>
+
+    <style>
+        /* Gaya untuk container utama */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Header */
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        /* Form input */
+        .input-group input {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        
+        .input-group button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .input-group button:hover {
+            background-color: #0056b3;
+        }
+        
+        /* Daftar buku */
+        .list-group-item {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            padding: 15px;
+        }
+        
+        .list-group-item span {
+            font-size: 1rem;
+            color: #555;
+        }
+        
+        .list-group-item button {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .list-group-item .editBtn {
+            background-color: #28a745;
+            color: #fff;
+            margin-right: 5px;
+        }
+        
+        .list-group-item .editBtn:hover {
+            background-color: #218838;
+        }
+        
+        .list-group-item .deleteBtn {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        
+        .list-group-item .deleteBtn:hover {
+            background-color: #c82333;
+        }
+        
+        /* Modal */
+        .modal-content {
+            border-radius: 10px;
+        }
+        
+        .modal-header {
+            background-color: #007bff;
+            color: #fff;
+        }
+        
+        .modal-title {
+            font-weight: bold;
+        }
+        
+        .modal-body label {
+            font-weight: bold;
+        }
+
+    </style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    
+    <a class="navbar-brand" href="/">Gubuk Sastra</a>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/book-view">Daftar Buku</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/pinjam">Pinjam</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+  <div class="container mt-5">
     <h1 class="text-center">Daftar Buku</h1>
-  
+
     <!-- Form untuk Menambahkan Buku Baru -->
     <form id="addBookForm" class="my-4">
       <div class="input-group">
@@ -30,7 +162,7 @@
         </div>
       </div>
     </form>
-  
+
     <!-- Daftar Buku -->
     <ul id="bookList" class="list-group">
       <% books.forEach(book => { %>
@@ -38,7 +170,7 @@
         class="list-group-item d-flex justify-content-between align-items-center"
       >
         <span>
-          <%= book.judul_buku %> - <%= book.pengarang %> - <%= book.penerbit %>
+          ID: <%= book.id %> - Judul: <%= book.judul_buku %> - Pengarang: <%= book.pengarang %> - Penerbit: <%= book.penerbit %>
         </span>
         <div>
           <button
@@ -57,7 +189,7 @@
       </li>
       <% }); %>
     </ul>
-  
+
     <!-- Modal Edit Buku -->
     <div
       id="editModal"
@@ -115,99 +247,7 @@
       </div>
     </div>
   </div>
-  
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $(document).ready(function () {
-      let editId;
-  
-      // Tambah buku baru
-      $("#addBookForm").on("submit", function (e) {
-        e.preventDefault();
-        const judulBuku = $("#newJudulBuku").val().trim();
-        const pengarang = $("#newPengarang").val().trim();
-        const penerbit = $("#newPenerbit").val().trim();
-  
-        if (judulBuku && pengarang && penerbit) {
-          $.ajax({
-            url: "/books",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-              judul_buku: judulBuku,
-              pengarang: pengarang,
-              penerbit: penerbit,
-            }),
-            success: function () {
-              location.reload();
-            },
-            error: function (error) {
-              alert("Error menambahkan buku: " + error.responseText);
-            },
-          });
-        } else {
-          alert("Semua field harus diisi!");
-        }
-      });
-  
-      // Tampilkan modal edit
-      $(document).on("click", ".editBtn", function () {
-        editId = $(this).data("id");
-        const currentData = $(this)
-          .closest("li")
-          .find("span")
-          .text()
-          .split(" - ");
-        $("#editJudulBuku").val(currentData[0]);
-        $("#editPengarang").val(currentData[1]);
-        $("#editPenerbit").val(currentData[2]);
-        $("#editModal").modal("show");
-      });
-  
-      // Update buku
-      $("#editBookForm").on("submit", function (e) {
-        e.preventDefault();
-        const judulBuku = $("#editJudulBuku").val().trim();
-        const pengarang = $("#editPengarang").val().trim();
-        const penerbit = $("#editPenerbit").val().trim();
-  
-        if (judulBuku && pengarang && penerbit) {
-          $.ajax({
-            url: "/books/" + editId,
-            type: "PUT",
-            data: JSON.stringify({
-              judul_buku: judulBuku,
-              pengarang: pengarang,
-              penerbit: penerbit,
-            }),
-            contentType: "application/json",
-            success: function () {
-              location.reload();
-            },
-            error: function (error) {
-              alert("Error memperbarui buku: " + error.responseText);
-            },
-          });
-        } else {
-          alert("Semua field harus diisi!");
-        }
-      });
-  
-      // Hapus buku
-      $(document).on("click", ".deleteBtn", function () {
-        const id = $(this).data("id");
-  
-        $.ajax({
-          url: "/books/" + id,
-          type: "DELETE",
-          success: function () {
-            location.reload();
-          },
-          error: function (error) {
-            alert("Error menghapus buku: " + error.responseText);
-          },
-        });
-      });
-    });
-  </script>
-  
+</body>
+</html>
