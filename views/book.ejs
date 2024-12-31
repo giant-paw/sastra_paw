@@ -1,132 +1,213 @@
 <div class="container mt-5">
     <h1 class="text-center">Daftar Buku</h1>
-
-    <!-- Form untuk Menambahkan Hewan Baru -->
-    <form id="addBooksForm" class="my-4">
-        <div class="input-group">
-            <input type="text" id="newjudulBuku" class="form-control" placeholder="Judul Buku" required>
-            <input type="text" id="newPengarang" class="form-control" placeholder="Nama Pengarang" required>
-            <input type="text" id="newPenerbit" class="form-control" placeholder="Penerbit Buku" required>
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Tambah Buku</button>
-            </div>
+  
+    <!-- Form untuk Menambahkan Buku Baru -->
+    <form id="addBookForm" class="my-4">
+      <div class="input-group">
+        <input
+          type="text"
+          id="newJudulBuku"
+          class="form-control"
+          placeholder="Judul Buku"
+          required
+        />
+        <input
+          type="text"
+          id="newPengarang"
+          class="form-control"
+          placeholder="Nama Pengarang"
+          required
+        />
+        <input
+          type="text"
+          id="newPenerbit"
+          class="form-control"
+          placeholder="Penerbit Buku"
+          required
+        />
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-primary">Tambah Buku</button>
         </div>
+      </div>
     </form>
-
+  
     <!-- Daftar Buku -->
     <ul id="bookList" class="list-group">
-        <% books.forEach(book => { %>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>
-                    <%= book.judul_buku %> - <%= book.pengarang %> - <%= book.penerbit %>
-                </span>
-                <div>
-                    <button class="btn btn-sm btn-success mr-2 editBtn" data-id="<%= book.id %>">Edit</button>
-                    <button class="btn btn-sm btn-danger deleteBtn" data-id="<%= book.id %>">Hapus</button>
-                </div>
-            </li>
-        <% }); %>
-    </ul>
-
-    <!-- Modal Edit Buku -->
-    <div id="editModal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Buku</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editBookForm">
-                        <div class="form-group">
-                            <label for="editJudulBuku">Judul Buku</label>
-                            <input type="text" id="editJudulBuku" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editPengarang">Nama Pengarang</label>
-                            <input type="text" id="editPengarang" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editPenerbit">Penerbit BUku</label>
-                            <input type="text" id="editPenerbit" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3">Simpan Perubahan</button>
-                    </form>
-                </div>
-            </div>
+      <% books.forEach(book => { %>
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <span>
+          <%= book.judul_buku %> - <%= book.pengarang %> - <%= book.penerbit %>
+        </span>
+        <div>
+          <button
+            class="btn btn-sm btn-success mr-2 editBtn"
+            data-id="<%= book.id %>"
+          >
+            Edit
+          </button>
+          <button
+            class="btn btn-sm btn-danger deleteBtn"
+            data-id="<%= book.id %>"
+          >
+            Hapus
+          </button>
         </div>
+      </li>
+      <% }); %>
+    </ul>
+  
+    <!-- Modal Edit Buku -->
+    <div
+      id="editModal"
+      class="modal fade"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Edit Buku</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editBookForm">
+              <div class="form-group">
+                <label for="editJudulBuku">Judul Buku</label>
+                <input
+                  type="text"
+                  id="editJudulBuku"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editPengarang">Nama Pengarang</label>
+                <input
+                  type="text"
+                  id="editPengarang"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editPenerbit">Penerbit Buku</label>
+                <input
+                  type="text"
+                  id="editPenerbit"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary mt-3">
+                Simpan Perubahan
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
     $(document).ready(function () {
-
-        // Tambah buku baru
-        
-        $('#addBookForm').on('submit', function (e) {
-            e.preventDefault();
-            const judulBuku = $('#newJudulBuku').val().trim();
-            const pengarang = $('#newPengarang').val().trim();
-            const penerbit = $('#newPenerbit').val().trim();
-            if (judulBuku && pengarang && penerbit) {
-                $.ajax({
-                    url: '/books',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({ judul_buku: judulBuku, pengarang: pengarang, penerbit: penerbit }),
-                    success: function (newBook) {
-                        location.reload(); // Reload untuk menampilkan buku baru
-                    },
-                    error: function (error) {
-                        console.error("Error menambahkan hewan:", error.responseText);
-                    }
-                });
-            }
+      let editId;
+  
+      // Tambah buku baru
+      $("#addBookForm").on("submit", function (e) {
+        e.preventDefault();
+        const judulBuku = $("#newJudulBuku").val().trim();
+        const pengarang = $("#newPengarang").val().trim();
+        const penerbit = $("#newPenerbit").val().trim();
+  
+        if (judulBuku && pengarang && penerbit) {
+          $.ajax({
+            url: "/books",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+              judul_buku: judulBuku,
+              pengarang: pengarang,
+              penerbit: penerbit,
+            }),
+            success: function () {
+              location.reload();
+            },
+            error: function (error) {
+              alert("Error menambahkan buku: " + error.responseText);
+            },
+          });
+        } else {
+          alert("Semua field harus diisi!");
+        }
+      });
+  
+      // Tampilkan modal edit
+      $(document).on("click", ".editBtn", function () {
+        editId = $(this).data("id");
+        const currentData = $(this)
+          .closest("li")
+          .find("span")
+          .text()
+          .split(" - ");
+        $("#editJudulBuku").val(currentData[0]);
+        $("#editPengarang").val(currentData[1]);
+        $("#editPenerbit").val(currentData[2]);
+        $("#editModal").modal("show");
+      });
+  
+      // Update buku
+      $("#editBookForm").on("submit", function (e) {
+        e.preventDefault();
+        const judulBuku = $("#editJudulBuku").val().trim();
+        const pengarang = $("#editPengarang").val().trim();
+        const penerbit = $("#editPenerbit").val().trim();
+  
+        if (judulBuku && pengarang && penerbit) {
+          $.ajax({
+            url: "/books/" + editId,
+            type: "PUT",
+            data: JSON.stringify({
+              judul_buku: judulBuku,
+              pengarang: pengarang,
+              penerbit: penerbit,
+            }),
+            contentType: "application/json",
+            success: function () {
+              location.reload();
+            },
+            error: function (error) {
+              alert("Error memperbarui buku: " + error.responseText);
+            },
+          });
+        } else {
+          alert("Semua field harus diisi!");
+        }
+      });
+  
+      // Hapus buku
+      $(document).on("click", ".deleteBtn", function () {
+        const id = $(this).data("id");
+  
+        $.ajax({
+          url: "/books/" + id,
+          type: "DELETE",
+          success: function () {
+            location.reload();
+          },
+          error: function (error) {
+            alert("Error menghapus buku: " + error.responseText);
+          },
         });
-
-        // Hapus hewan
-        $('.deleteBtn').on('click', function () {
-            const id = $(this).data('id');
-            $.ajax({
-                url: '/books/' + id,
-                type: 'DELETE',
-                success: function () {
-                    location.reload(); // Reload untuk memperbarui daftar
-                }
-            });
-        });
-
-        // Tampilkan modal edit dengan hewan saat ini
-        let editId;
-        $('.editBtn').on('click', function () {
-            editId = $(this).data('id');
-            const currentJudulBuku = $(this).closest('li').find('span').text().split(' - ')[0];
-            const currentPengarang = $(this).closest('li').find('span').text().split(' - ')[1];
-            const currentPenerbit = $(this).closest('li').find('span').text().split(' - ')[2];
-            $('#editJudulBuku').val(currentJudulBuku);
-            $('#editPengarang').val(currentPengarang);
-            $('#editPenerbit').val(currentPenerbit);
-            $('#editModal').modal('show');
-        });
-
-        // Update buku pada submit form
-        $('#editBookForm').on('submit', function (e) {
-            e.preventDefault();
-            const judulBuku = $('#editJudulBuku').val().trim();
-            const pengarang = $('#editPengarang').val().trim();
-            const penerbit = $('#editPenerbit').val().trim();
-            if (judulBuku && pengarang && penerbit) {
-                $.ajax({
-                    url: '/books/' + editId,
-                    type: 'PUT',
-                    data: JSON.stringify({ judul_buku: judulBuku, penerbit: penerbit, pengarang: pengarang }),
-                    contentType: 'application/json',
-                    success: function () {
-                        location.reload(); // Reload untuk menampilkan perubahan
-                    }
-                });
-            }
-        });
+      });
     });
-</script>
+  </script>
+  
