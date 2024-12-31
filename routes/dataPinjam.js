@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+// Inisialisasi array untuk menyimpan data peminjaman
+const loans = []; // Tambahkan ini di bagian atas file
+
 // GET: Mendapatkan semua peminjaman
 router.get("/", (req, res) => {
   res.json(loans);
@@ -16,6 +19,7 @@ router.post("/", (req, res) => {
     tgl_kembali: req.body.tgl_kembali,
   };
   if (!newLoan.id_anggota || !newLoan.id_buku || !newLoan.judul_buku || !newLoan.tgl_pinjam || !newLoan.tgl_kembali) {
+    console.error("Validation failed: Missing required fields");
     return res.status(400).json({ message: "SEMUA FIELD HARUS DIISI!" });
   }
   loans.push(newLoan);

@@ -162,14 +162,14 @@
         />
         <input
           type="text"
-          id="newTanggalPinjam"
+          id="newTglPinjam"
           class="form-control"
           placeholder="Tanggal Peminjaman"
           required
         />
         <input
           type="text"
-          id="newTanggalKembali"
+          id="newTglKembali"
           class="form-control"
           placeholder="Tanggal Kembali"
           required
@@ -192,13 +192,13 @@
         <div>
           <button
             class="btn btn-sm btn-success mr-2 editBtn"
-            data-id="<%= loan.no_pinjaman %>"
+            data-no_pinjaman="<%= loan.no_pinjaman %>"
           >
             Edit
           </button>
           <button
             class="btn btn-sm btn-danger deleteBtn"
-            data-id="<%= loan.no_pinjaman %>"
+            data-no_pinjaman="<%= loan.no_pinjaman %>"
           >
             Hapus
           </button>
@@ -306,11 +306,13 @@
 
   
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <script>
   $(document).ready(function () {
-    let editNoPinjaman;
+    let editId;
 
-    // Tambah peminjaman baru
+    // Tambah buku baru
     $("#addLoanForm").on("submit", function (e) {
       e.preventDefault();
       const id_anggota = $("#newIdAnggota").val().trim();
@@ -329,13 +331,13 @@
             id_buku: id_buku,
             judul_buku: judul_Buku,
             tgl_pinjam: tgl_pinjam,
-            tgl_kembali: tgl_kembali,
+            tgl_kembali: tgl_kembali
           }),
           success: function () {
             location.reload();
           },
           error: function (error) {
-            alert("Error menambahkan Data Peminjaman: " + error.responseText);
+            alert("Error menambahkan peminjaman: " + error.responseText);
           },
         });
       } else {
@@ -370,21 +372,21 @@
 
       if (id_anggota && id_buku && judul_Buku && tgl_pinjam && tgl_kembali) {
         $.ajax({
-          url: "/loans/" + editNoPinjaman,
+          url: "/loans/" + editId,
           type: "PUT",
           data: JSON.stringify({
             id_anggota: id_anggota,
             id_buku: id_buku,
             judul_buku: judul_Buku,
             tgl_pinjam: tgl_pinjam,
-            tgl_kembali: tgl_kembali,
+            tgl_kembali: tgl_kembali
           }),
           contentType: "application/json",
           success: function () {
             location.reload();
           },
           error: function (error) {
-            alert("Error memperbarui data peminjaman: " + error.responseText);
+            alert("Error memperbarui peminjaman: " + error.responseText);
           },
         });
       } else {
@@ -392,9 +394,9 @@
       }
     });
 
-    // Hapus buku
+    // Hapus peminjaman
     $(document).on("click", ".deleteBtn", function () {
-      const no_pinjaman = $(this).data("no_pinjaman");
+      const id = $(this).data("no_pinjaman");
 
       $.ajax({
         url: "/loans/" + id,
@@ -403,11 +405,13 @@
           location.reload();
         },
         error: function (error) {
-          alert("Error menghapus data peminjaman: " + error.responseText);
+          alert("Error menghapus peminjaman: " + error.responseText);
         },
       });
     });
   });
 </script>
+
+
 </body>
 </html>

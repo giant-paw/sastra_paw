@@ -57,12 +57,6 @@ app.get('/book-view',isAuthenticated, (req, res) => {
     });
 });
 
-// app.get('/pinjam', isAuthenticated, (req, res)=>{
-//     res.render('pinjam', {
-//         layout : 'layouts/main-layout.ejs'
-//     });
-// })
-
 app.get('/loan-view',isAuthenticated, (req, res) => {
     db.query('SELECT * FROM peminjaman', (err, loans) => {
         if (err) return res.status(500).send('Internal Server Error');
