@@ -44,7 +44,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// Endpoint untuk menghapus data hewan
+// Endpoint untuk menghapus data Buku
 router.delete('/:id', (req, res) => {
     db.query('DELETE FROM buku WHERE id = ?', [req.params.id], (err, results) => {
         if (err) return res.status(500).send('Internal Server Error');
