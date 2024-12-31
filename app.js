@@ -67,6 +67,16 @@ app.get('/loan-view',isAuthenticated, (req, res) => {
     });
 });
 
+app.get('/dataBuku',isAuthenticated, (req, res) => {
+    db.query('SELECT * FROM buku', (err, books) => {
+        if (err) return res.status(500).send('Internal Server Error');
+        res.render('userDataBuku', {
+            layout: 'layouts/main-layout.ejs',
+            books: books
+        });
+    });
+});
+
 app.listen(port,()=> {
     console.log(`server berjalan di http://localhost:${port}`);
 });

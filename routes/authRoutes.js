@@ -3,23 +3,34 @@ const bcrypt = require("bcryptjs");
 const db = require("../database/db.js");
 const router = express.Router();
 
-// Route untuk menampilkan form signup
-router.get("/signup", (req, res) => {
+// Route untuk menampilkan form signup untuk Admin
+router.get("/signup/admin", (req, res) => {
   res.render("signup", {
     layout: "layouts/main-layout",
+    role: "admin",
+    error: null,
+  });
+});
+
+// Route untuk menampilkan form signup untuk User
+router.get("/signup/user", (req, res) => {
+  res.render("signup", {
+    layout: "layouts/main-layout",
+    role: "user",
     error: null,
   });
 });
 
 // Route Signup
 router.post("/signup", (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, role } = req.body;
 
   // Validasi input
-  if (!username || !password) {
+  if (!username || !password || !role) {
     return res.status(400).render("signup", {
       layout: "layouts/main-layout",
-      error: "Username dan password harus diisi!",
+      role,
+      error: "Semua field harus diisi!",
     });
   }
 
@@ -31,14 +42,15 @@ router.post("/signup", (req, res) => {
     }
 
     db.query(
-      "INSERT INTO users (username, password) VALUES (?, ?)",
-      [username, hash],
-      (err, result) => {
+      "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+      [username, hash, role],
+      (err) => {
         if (err) {
           if (err.code === "ER_DUP_ENTRY") {
             // Handle duplicate username
             return res.status(400).render("signup", {
               layout: "layouts/main-layout",
+              role,
               error: "Username sudah digunakan!",
             });
           }
@@ -105,11 +117,17 @@ router.post("/login", (req, res) => {
           });
         }
 
-        // Simpan userId ke session
+        // Simpan data user ke session
         req.session.userId = user.id;
         req.session.username = user.username;
+        req.session.role = user.role;
 
-        res.redirect("/"); // Arahkan ke halaman utama setelah login
+        // Redirect berdasarkan role
+        if (user.role === "admin") {
+          res.redirect("/");
+        } else {
+          res.redirect("/dataBuku");
+        }
       });
     }
   );
