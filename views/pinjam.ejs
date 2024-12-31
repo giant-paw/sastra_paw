@@ -303,5 +303,111 @@
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    let editNoPinjaman;
+
+    // Tambah buku baru
+    $("#addLoanForm").on("submit", function (e) {
+      e.preventDefault();
+      const id_anggota = $("#newIdAnggota").val().trim();
+      const id_buku = $("#newIdBuku").val().trim();
+      const judulBuku = $("#newJudulBuku").val().trim();
+      const tgl_pinjam = $("#newTglPinjam").val().trim();
+      const tgl_kembali = $("#newTglKembali").val().trim();
+
+      if (id_anggota && id_buku && judulBuku && tgl_pinjam && tgl_kembali) {
+        $.ajax({
+          url: "/loans",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            id_anggota: id_anggota,
+            id_buku: id_buku,
+            judul_buku: judulBuku,
+            tgl_pinjam: tgl_pinjam,
+            tgl_kembali: tgl_kembali,
+          }),
+          success: function () {
+            location.reload();
+          },
+          error: function (error) {
+            alert("Error menambahkan Data Peminjaman: " + error.responseText);
+          },
+        });
+      } else {
+        alert("Semua field harus diisi!");
+      }
+    });
+
+    // Tampilkan modal edit
+    $(document).on("click", ".editBtn", function () {
+      editId = $(this).data("no_pinjaman");
+      const currentData = $(this)
+        .closest("li")
+        .find("span")
+        .text()
+        .split(" - ");
+      $("#editIdAnggota").val(currentData[0]);
+      $("#editIdBuku").val(currentData[1]);
+      $("#editJudulBuku").val(currentData[2]);
+      $("#editTglPinjam").val(currentData[3]);
+      $("#editTglKembali").val(currentData[4]);
+      $("#editModal").modal("show");
+    });
+
+    // Update buku
+    $("#editLoanForm").on("submit", function (e) {
+      e.preventDefault();
+      const id_anggota = $("#editIdAnggota").val().trim();
+      const id_buku = $("#editIdBuku").val().trim();
+      const judulBuku = $("#editJudulBuku").val().trim();
+      const tgl_pinjam = $("#editTglPinjam").val().trim();
+      const tgl_kembali = $("#editTglKembali").val().trim();
+
+      if (id_anggota && id_buku && judulBuku && tgl_pinjam && tgl_kembali) {
+        $.ajax({
+          url: "/loans/" + editNoPinjaman,
+          type: "PUT",
+          data: JSON.stringify({
+            id_anggota: id_anggota,
+            id_buku: id_buku,
+            judul_buku: judulBuku,
+            tgl_pinjam: tgl_pinjam,
+            tgl_kembali: tgl_kembali,
+          }),
+          contentType: "application/json",
+          success: function () {
+            location.reload();
+          },
+          error: function (error) {
+            alert("Error memperbarui data peminjaman: " + error.responseText);
+          },
+        });
+      } else {
+        alert("Semua field harus diisi!");
+      }
+    });
+
+    // Hapus buku
+    $(document).on("click", ".deleteBtn", function () {
+      const no_pinjaman = $(this).data("no_pinjaman");
+
+      $.ajax({
+        url: "/loans/" + id,
+        type: "DELETE",
+        success: function () {
+          location.reload();
+        },
+        error: function (error) {
+          alert("Error menghapus data peminjaman: " + error.responseText);
+        },
+      });
+    });
+  });
+</script>
 </body>
 </html>

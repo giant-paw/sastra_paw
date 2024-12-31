@@ -42,15 +42,15 @@ router.put("/:no_pinjaman", (req, res) => {
   );
   if (!loan) return res.status(404).json({ message: "Data peminjaman tidak ditemukan" });
 
-  book.id_anggota = req.body.id_anggota || book.id_anggota;
-  book.id_buku = req.body.id_buku || book.id_buku;
-  book.judul_buku = req.body.judul_buku || book.judul_buku;
-  book.tgl_pinjam = req.body.tgl_pinjam || book.tgl_pinjam;
-  book.tgl_kembali = req.body.tgl_kembali || book.tgl_kembali;
+  loan.id_anggota = req.body.id_anggota || loan.id_anggota;
+  loan.id_buku = req.body.id_buku || loan.id_buku;
+  loan.judul_buku = req.body.judul_buku || loan.judul_buku;
+  loan.tgl_pinjam = req.body.tgl_pinjam || loan.tgl_pinjam;
+  loan.tgl_kembali = req.body.tgl_kembali || loan.tgl_kembali;
 
   res.status(200).json({
-    message: `Data peminjaman dengan kode ${book.id_anggota} telah diperbarui`,
-    updatedBook: loan,
+    message: `Data peminjaman dengan kode ${loan.id_anggota} telah diperbarui`,
+    updatedLoan: loan,
   });
 });
 

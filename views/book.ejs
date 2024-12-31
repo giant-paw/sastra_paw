@@ -124,7 +124,7 @@
                 <a class="nav-link" href="/book-view">Daftar Buku</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/pinjam">Pinjam</a>
+                <a class="nav-link" href="/loan-view">Pinjam</a>
             </li>
         </ul>
     </div>
@@ -249,5 +249,102 @@
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    let editId;
+
+    // Tambah buku baru
+    $("#addBookForm").on("submit", function (e) {
+      e.preventDefault();
+      const judulBuku = $("#newJudulBuku").val().trim();
+      const pengarang = $("#newPengarang").val().trim();
+      const penerbit = $("#newPenerbit").val().trim();
+
+      if (judulBuku && pengarang && penerbit) {
+        $.ajax({
+          url: "/books",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({
+            judul_buku: judulBuku,
+            pengarang: pengarang,
+            penerbit: penerbit,
+          }),
+          success: function () {
+            location.reload();
+          },
+          error: function (error) {
+            alert("Error menambahkan buku: " + error.responseText);
+          },
+        });
+      } else {
+        alert("Semua field harus diisi!");
+      }
+    });
+
+    // Tampilkan modal edit
+    $(document).on("click", ".editBtn", function () {
+      editId = $(this).data("id");
+      const currentData = $(this)
+        .closest("li")
+        .find("span")
+        .text()
+        .split(" - ");
+      $("#editJudulBuku").val(currentData[0]);
+      $("#editPengarang").val(currentData[1]);
+      $("#editPenerbit").val(currentData[2]);
+      $("#editModal").modal("show");
+    });
+
+    // Update buku
+    $("#editBookForm").on("submit", function (e) {
+      e.preventDefault();
+      const judulBuku = $("#editJudulBuku").val().trim();
+      const pengarang = $("#editPengarang").val().trim();
+      const penerbit = $("#editPenerbit").val().trim();
+
+      if (judulBuku && pengarang && penerbit) {
+        $.ajax({
+          url: "/books/" + editId,
+          type: "PUT",
+          data: JSON.stringify({
+            judul_buku: judulBuku,
+            pengarang: pengarang,
+            penerbit: penerbit,
+          }),
+          contentType: "application/json",
+          success: function () {
+            location.reload();
+          },
+          error: function (error) {
+            alert("Error memperbarui buku: " + error.responseText);
+          },
+        });
+      } else {
+        alert("Semua field harus diisi!");
+      }
+    });
+
+    // Hapus buku
+    $(document).on("click", ".deleteBtn", function () {
+      const id = $(this).data("id");
+
+      $.ajax({
+        url: "/books/" + id,
+        type: "DELETE",
+        success: function () {
+          location.reload();
+        },
+        error: function (error) {
+          alert("Error menghapus buku: " + error.responseText);
+        },
+      });
+    });
+  });
+</script>
+
 </body>
 </html>
