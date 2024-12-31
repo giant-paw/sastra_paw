@@ -1,5 +1,6 @@
 const express = require('express');
 const booksRoutes = require('./routes/bookdb.js');
+const loansRoutes = require('./routes/pinjamdb.js');
 const app = express();
 require('dotenv').config();
 const port = process.env.PORT;
@@ -23,6 +24,9 @@ app.use(expressLayouts);
 app.use(express.json());
 
 app.use('/books', booksRoutes);
+
+app.use('/loans', loansRoutes);
+
 app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }));
@@ -43,17 +47,6 @@ app.get('/', isAuthenticated,(req, res) => {
     );
 });
 
-app.get('/pinjam', isAuthenticated, (req, res)=>{
-    res.render('pinjam', {
-        layout : 'layouts/main-layout.ejs'
-    });
-})
-
-app.listen(port,()=> {
-    console.log(`server berjalan di http://localhost:${port}`);
-});
-
-
 app.get('/book-view',isAuthenticated, (req, res) => {
     db.query('SELECT * FROM buku', (err, books) => {
         if (err) return res.status(500).send('Internal Server Error');
@@ -62,4 +55,24 @@ app.get('/book-view',isAuthenticated, (req, res) => {
             books: books
         });
     });
+});
+
+// app.get('/pinjam', isAuthenticated, (req, res)=>{
+//     res.render('pinjam', {
+//         layout : 'layouts/main-layout.ejs'
+//     });
+// })
+
+app.get('/loan-view',isAuthenticated, (req, res) => {
+    db.query('SELECT * FROM peminjaman', (err, loans) => {
+        if (err) return res.status(500).send('Internal Server Error');
+        res.render('pinjam', {
+            layout: 'layouts/main-layout.ejs',
+            loans: loans
+        });
+    });
+});
+
+app.listen(port,()=> {
+    console.log(`server berjalan di http://localhost:${port}`);
 });
