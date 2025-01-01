@@ -23,10 +23,10 @@ router.get("/signup/user", (req, res) => {
 
 // Route Signup
 router.post("/signup", (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, nama_lengkap, jenis_kelamin, alamat, role } = req.body;
 
   // Validasi input
-  if (!username || !password || !role) {
+  if (!username || !password || !nama_lengkap || !jenis_kelamin || !alamat || !role) {
     return res.status(400).render("signup", {
       layout: "layouts/main-layout",
       role,
@@ -42,8 +42,8 @@ router.post("/signup", (req, res) => {
     }
 
     db.query(
-      "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
-      [username, hash, role],
+      "INSERT INTO users (username, password, nama_lengkap, jenis_kelamin, alamat, role) VALUES (?, ?, ?, ?, ?, ?)",
+      [username, hash, nama_lengkap, jenis_kelamin, alamat, role],
       (err) => {
         if (err) {
           if (err.code === "ER_DUP_ENTRY") {

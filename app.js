@@ -77,6 +77,16 @@ app.get('/userDataBuku',isAuthenticated, (req, res) => {
     });
 });
 
+app.get('/data-anggota',isAuthenticated, (req, res) => {
+    db.query(`SELECT * FROM users WHERE role = 'user'`, (err, users) => {
+        if (err) return res.status(500).send('Internal Server Error');
+        res.render('dataAnggota', {
+            layout: 'layouts/main-layout.ejs',
+            users: users
+        });
+    });
+});
+
 app.get('/userHomepage', isAuthenticated,(req, res) => {
     res.render('userHomepage', 
         {layout : 'layouts/main-layout.ejs'}
